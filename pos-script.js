@@ -99,14 +99,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ข้อมูลเมนู
 let menu = [
-    { id: 1, name: 'น้ำเปล่า', price: 10 },
-    { id: 2, name: 'โค้ก', price: 15 },
-    { id: 3, name: 'เป๊ปซี่', price: 15 },
-    { id: 4, name: 'น้ำส้ม', price: 20 },
-    { id: 5, name: 'กาแฟเย็น', price: 25 },
-    { id: 6, name: 'ชาเย็น', price: 20 },
-    { id: 7, name: 'นมสด', price: 20 },
-    { id: 8, name: 'น้ำแดง', price: 15 }
+    { id: 1, name: 'น้ำผึ้งมะนาว', price: 30 },
+    { id: 2, name: 'น้ำผึ้งมะนาวโซดา', price: 35 },
+    { id: 3, name: 'แดงมะนาวโซดา', price: 35 },
+    { id: 4, name: 'แดงมะนาว', price: 30 },
+    { id: 5, name: 'ชามะนาว', price: 30 },
+    { id: 6, name: 'บ๊วยมะนาว', price: 30 },
+    { id: 7, name: 'บ๊วยมะนาว', price: 35 },
+    { id: 8, name: 'อัญชันมะนาว', price: 30 }
 ];
 
 // ตะกร้าสินค้า
@@ -439,3 +439,4 @@ checkLogin();
 loadMenu();
 renderMenu();
 renderCart();
+
