@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS ร้านขายน้ำ</title>
+    <link rel="stylesheet" href="pos-style.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-box">
+            <h1>🥤 POS ร้านขายน้ำ</h1>
+            <h3>เข้าสู่ระบบ</h3>
+            <input type="password" id="passwordInput" placeholder="รหัสผ่าน" class="login-input">
+            <button onclick="login()" class="login-btn">เข้าสู่ระบบ</button>
+            <p class="login-hint">รหัสผ่านเริ่มต้น: 1234</p>
+        </div>
+    </div>
+
+    <div class="pos-container" id="posContainer" style="display: none;">
+        <!-- ส่วนหัว -->
+        <header class="pos-header">
+            <h1>🥤 POS ร้านขายน้ำ</h1>
+            <div class="header-actions">
+                <button class="btn-secondary" onclick="showSalesReport()">📊 สรุปยอดขาย</button>
+                <button class="btn-secondary" onclick="showMenuManager()">⚙️ จัดการเมนู</button>
+                <button class="btn-secondary" onclick="showPasswordManager()">🔐 เปลี่ยนรหัส</button>
+                <button class="btn-secondary" onclick="logout()">🚪 ออกจากระบบ</button>
+            </div>
+        </header>
+
+        <div class="pos-main">
+            <!-- ส่วนเมนูสินค้า -->
+            <div class="menu-section">
+                <h2>เมนูเครื่องดื่ม</h2>
+                <div class="menu-grid" id="menuGrid"></div>
+            </div>
+
+            <!-- ส่วนตะกร้าและชำระเงิน -->
+            <div class="cart-section">
+                <div class="cart-header">
+                    <h2>รายการสั่งซื้อ</h2>
+                    <button class="btn-clear" onclick="clearCart()">🗑️ ล้างทั้งหมด</button>
+                </div>
+                
+                <div class="cart-items" id="cartItems">
+                    <p class="empty-cart">ยังไม่มีรายการสั่งซื้อ</p>
+                </div>
+
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>รวมทั้งหมด:</span>
+                        <span class="total-amount" id="totalAmount">฿0</span>
+                    </div>
+                </div>
+
+                <div class="payment-section">
+                    <label>รับเงิน:</label>
+                    <input type="number" id="receivedAmount" placeholder="0" class="input-amount">
+                    <div class="change-display">
+                        <span>เงินทอน:</span>
+                        <span id="changeAmount">฿0</span>
+                    </div>
+                    <button class="btn-checkout" onclick="checkout()">💰 ชำระเงิน</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal สรุปยอดขาย -->
+    <div id="salesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📊 สรุปยอดขาย</h2>
+                <span class="close" onclick="closeModal('salesModal')">&times;</span>
+            </div>
+            <div class="modal-body" id="salesReport"></div>
+        </div>
+    </div>
+
+    <!-- Modal จัดการเมนู -->
+    <div id="menuModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙️ จัดการเมนู</h2>
+                <span class="close" onclick="closeModal('menuModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="menu-form">
+                    <h3>เพิ่มเมนูใหม่</h3>
+                    <input type="text" id="newMenuName" placeholder="ชื่อเมนู" class="input-field">
+                    <input type="number" id="newMenuPrice" placeholder="ราคา" class="input-field">
+                    <button class="btn-primary" onclick="addMenu()">➕ เพิ่มเมนู</button>
+                </div>
+                <div class="menu-list">
+                    <h3>รายการเมนูทั้งหมด</h3>
+                    <div id="menuList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal เปลี่ยนรหัสผ่าน -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔐 เปลี่ยนรหัสผ่าน</h2>
+                <span class="close" onclick="closeModal('passwordModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="password-form">
+                    <label>รหัสผ่านเดิม:</label>
+                    <input type="password" id="oldPassword" placeholder="รหัสผ่านเดิม" class="input-field">
+                    
+                    <label>รหัสผ่านใหม่:</label>
+                    <input type="password" id="newPassword" placeholder="รหัสผ่านใหม่" class="input-field">
+                    
+                    <label>ยืนยันรหัสผ่านใหม่:</label>
+                    <input type="password" id="confirmPassword" placeholder="ยืนยันรหัสผ่านใหม่" class="input-field">
+                    
+                    <button class="btn-primary" onclick="changePassword()">เปลี่ยนรหัสผ่าน</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal ใบเสร็จ -->
+    <div id="receiptModal" class="modal">
+        <div class="modal-content receipt-modal">
+            <div class="modal-header">
+                <h2>🧾 ใบเสร็จรับเงิน</h2>
+                <span class="close" onclick="closeModal('receiptModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="receiptContent" class="receipt"></div>
+                <div class="receipt-actions">
+                    <button class="btn-primary" onclick="printReceipt()">🖨️ พิมพ์</button>
+                    <button class="btn-secondary" onclick="closeModal('receiptModal')">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="pos-script.js"></script>
+</body>
+</html>
